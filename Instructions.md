@@ -38,13 +38,13 @@ To begin, use Python and SQLAlchemy to do basic climate analysis and data explor
 
 * Load the query results into a Pandas DataFrame and set the index to the date column.  ----- DONE ----
 
-* Sort the DataFrame values by `date`.
+* Sort the DataFrame values by `date`.  ----- DONE ----
 
-* Plot the results using the DataFrame `plot` method.
+* Plot the results using the DataFrame `plot` method.  ----- DONE ----
 
   ![precipitation](Images/precipitation.png)
 
-* Use Pandas to print the summary statistics for the precipitation data.
+* Use Pandas to print the summary statistics for the precipitation data.  ----- DONE ----
 
 ### Station Analysis
 
