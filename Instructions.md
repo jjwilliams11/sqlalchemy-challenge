@@ -48,13 +48,14 @@ To begin, use Python and SQLAlchemy to do basic climate analysis and data explor
 
 ### Station Analysis
 
-* Design a query to calculate the total number of stations in the dataset.
+* Design a query to calculate the total number of stations in the dataset. ----- DONE ----
 
 * Design a query to find the most active stations (i.e. which stations have the most rows?).
+ ----- DONE ----
 
-  * List the stations and observation counts in descending order.
+  * List the stations and observation counts in descending order. ----- DONE ----
 
-  * Which station id has the highest number of observations?
+  * Which station id has the highest number of observations? ----- DONE ----
 
   * Using the most active station id, calculate the lowest, highest, and average temperature.
 
