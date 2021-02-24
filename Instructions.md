@@ -18,25 +18,25 @@ Congratulations! You've decided to treat yourself to a long holiday vacation in 
 
 To begin, use Python and SQLAlchemy to do basic climate analysis and data exploration of your climate database. All of the following analysis should be completed using SQLAlchemy ORM queries, Pandas, and Matplotlib.
 
-* Use the provided [starter notebook](climate_starter.ipynb) and [hawaii.sqlite](Resources/hawaii.sqlite) files to complete your climate analysis and data exploration.
+* Use the provided [starter notebook](climate_starter.ipynb) and [hawaii.sqlite](Resources/hawaii.sqlite) files to complete your climate analysis and data exploration.  ----- DONE ---- 
 
-* Use SQLAlchemy `create_engine` to connect to your sqlite database.
+* Use SQLAlchemy `create_engine` to connect to your sqlite database.  ----- DONE ---- 
 
-* Use SQLAlchemy `automap_base()` to reflect your tables into classes and save a reference to those classes called `Station` and `Measurement`.
+* Use SQLAlchemy `automap_base()` to reflect your tables into classes and save a reference to those classes called `Station` and `Measurement`.  ----- DONE ---- 
 
-* Link Python to the database by creating an SQLAlchemy session.
+* Link Python to the database by creating an SQLAlchemy session.----- DONE ----
 
-* **Important** Don't forget to close out your session at the end of your notebook.
+* **Important** Don't forget to close out your session at the end of your notebook.  ----- DONE ----
 
 ### Precipitation Analysis
 
-* Start by finding the most recent date in the data set.
+* Start by finding the most recent date in the data set.   ----- DONE ----
 
-* Using this date, retrieve the last 12 months of precipitation data by querying the 12 preceding months of data. **Note** you do not pass in the date as a variable to your query.
+* Using this date, retrieve the last 12 months of precipitation data by querying the 12 preceding months of data. **Note** you do not pass in the date as a variable to your query.  ----- DONE ----
 
-* Select only the `date` and `prcp` values.
+* Select only the `date` and `prcp` values.  ----- DONE ----
 
-* Load the query results into a Pandas DataFrame and set the index to the date column.
+* Load the query results into a Pandas DataFrame and set the index to the date column.  ----- DONE ----
 
 * Sort the DataFrame values by `date`.
 
