@@ -57,15 +57,16 @@ To begin, use Python and SQLAlchemy to do basic climate analysis and data explor
 
   * Which station id has the highest number of observations? ----- DONE ----
 
-  * Using the most active station id, calculate the lowest, highest, and average temperature.
+  * Using the most active station id, calculate the lowest, highest, and average temperature. 
+  ----- DONE ----
 
-  * Hint: You will need to use a function such as `func.min`, `func.max`, `func.avg`, and `func.count` in your queries.
+  * Hint: You will need to use a function such as `func.min`, `func.max`, `func.avg`, and `func.count` in your queries.  
 
 * Design a query to retrieve the last 12 months of temperature observation data (TOBS).
 
-  * Filter by the station with the highest number of observations.
+  * Filter by the station with the highest number of observations.  ----- DONE ----
 
-  * Query the last 12 months of temperature observation data for this station.
+  * Query the last 12 months of temperature observation data for this station.  ----- DONE ----
 
   * Plot the results as a histogram with `bins=12`.
 
