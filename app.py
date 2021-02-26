@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 
 import numpy as np
+import datetime as dt
 
 from flask import Flask, jsonify
 
@@ -28,22 +29,22 @@ station = Base.classes.station
 app = Flask(__name__)
 
 # Setup Flask Routes
-
+# Home Route with Text
 @app.route("/")
 def home():
     """List all routes that are available.""" 
     return (
-        f"Welcome to Hawaii's weather API!<br/>"
+        f"Welcome to Hawaii's weather API which provides data for 2010-01-01 to 2017-08-23<br/>"
         f"The available routes for you to explore are below:<br/>"
         f"/api/v1.0/precipitation<br/>"
         f"/api/v1.0/stations<br/>"
         f"/api/v1.0/tobs<br/>"
-        f"/api/v1.0/<start><br/>"
-        f"/api/v1.0/<start>/<end><br/>"
+        f"/api/v1.0/start_date<br/>"
+        f"/api/v1.0/start_date/end_date<br/>"
+
     )
 
-
-
+# Precipation Route with all dates and precipiation measures
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     """Convert the query results to a dictionary using `date` as the key and `prcp` as the value.
@@ -69,6 +70,7 @@ def precipitation():
     return jsonify(hawaii_precip)
 
 
+# Station Route with all Hawaii stations
 @app.route("/api/v1.0/stations")
 def stations():
     #Create a session to link from Python to DB
@@ -96,16 +98,36 @@ def stations():
     
     return jsonify(hawaii_station_list)
 
-
+# Temperature Route with temperatures for the most active station for the previous year
 @app.route("/api/v1.0/tobs")
 def tobs():
-    """Query the dates and temperature observations of the most active station for the last year of data.
-    Return a JSON list of temperature observations (TOBS) for the previous year."""
+    
     #Create a session to link from Python to DB
     session = Session(engine)
 
-    #Query all precipatations for Hawaii
-    precipitation_query = session.query(measurement.date, measurement.tobs).all()
+    # Find the most recent date in the data set and 
+    max_query = session.query(func.max(measurement.date)).one()
+    max_date = max_query[0]
+
+    # Convert date string to datetime for start date
+    max_date_conv = dt.datetime.strptime(max_date, '%Y-%m-%d')
+    start_date = max_date_conv.date()
+
+
+    # Calculate the date one year from the last date in data set.
+    days_in_year = dt.timedelta(365)
+    end_date = start_date - days_in_year
+
+    #Determine most active station for query
+    active_station_query = session.query(measurement.station, func.count(measurement.station))\
+            .group_by(measurement.station).order_by(func.count(measurement.station).desc()).first()
+
+    most_active_station = active_station_query[0]
+    
+    station_temp_query = session.query(measurement.station, measurement.date, measurement.tobs)\
+                    .filter(measurement.station == most_active_station)\
+                    .filter(measurement.date.between(end_date, start_date))
+
 
     #Close session link
     session.close()
@@ -113,8 +135,9 @@ def tobs():
     # Create a dictionary from the row data and append to a list precipitations
     hawaii_temps = []
 
-    for date, tobs in precipitation_query:
+    for station, date, tobs in station_temp_query:
         hawaii_tobs_dict = {}
+        hawaii_tobs_dict["station"] = station
         hawaii_tobs_dict["date"] = date
         hawaii_tobs_dict["tobs"] = tobs
         hawaii_temps.append(hawaii_tobs_dict)
@@ -122,21 +145,7 @@ def tobs():
     return jsonify(hawaii_temps)
 
 
-
-
-# most_active_station = stations_count.iloc[0].station
-# station_stats_query = session.query(measurement.station, func.min(measurement.tobs),
-#                                     func.max(measurement.tobs), func.avg(measurement.tobs),
-#                                    func.count(measurement.tobs))\
-#                                     .filter(measurement.station == most_active_station).statement
-# station_temp = pd.read_sql_query(station_stats_query,session.bind)
-# station_temp
-
-# temp_query = session.query(measurement.date, measurement.tobs)\
-#     .filter(measurement.date.between(end_date, start_date))\
-#     .filter(measurement.station == most_active_station).statement
-
-
+# Start Route with Min, Max, and AVG from all dates after the start date given 
 @app.route("/api/v1.0/<start>")
 def start(start = None):
     """When given the start only, calculate `TMIN`, `TAVG`, and `TMAX` for all 
@@ -147,7 +156,7 @@ def start(start = None):
 
     #Query all precipatations for Hawaii
     start_query = session.query(measurement.date, func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs) )\
-                            .filter( measurement.date >= start)\
+                            .filter(measurement.date >= start)\
                             .group_by(measurement.date)
 
 
@@ -168,11 +177,36 @@ def start(start = None):
     return jsonify(start_search)
 
 
-
+# Start/End Route with Min, Max, and AVG from all dates between dates given
 @app.route("/api/v1.0/<start>/<end>")
-def start_end(start,end):
-    """Code"""
+def start_end(start = None ,end = None):
+    """When given the start only, calculate `TMIN`, `TAVG`, and `TMAX` for all 
+    dates between the start and end dates."""
 
+    #Create a session to link from Python to DB
+    session = Session(engine)
+
+    #Query all precipatations for Hawaii
+    start_query = session.query(measurement.date, func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs) )\
+                            .filter(measurement.date.between(start, end))\
+                            .group_by(measurement.date)
+
+
+    #Close session link
+    session.close()
+
+    # Create a dictionary from the row data and append to a list precipitations
+    start_search = []
+
+    for date, min, max, avg in start_query:
+        start_dict = {}
+        start_dict["date"] = date
+        start_dict["min"] = min
+        start_dict["max"] = max
+        start_dict["avg"] = avg
+        start_search.append(start_dict)
+    
+    return jsonify(start_search)
 
 if __name__ == '__main__':
     app.run(debug=True)
