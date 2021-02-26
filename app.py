@@ -138,7 +138,7 @@ def tobs():
 
 
 @app.route("/api/v1.0/<start>")
-def start():
+def start(start = None):
     """When given the start only, calculate `TMIN`, `TAVG`, and `TMAX` for all 
     dates greater than and equal to the start date."""
 
@@ -147,7 +147,8 @@ def start():
 
     #Query all precipatations for Hawaii
     start_query = session.query(measurement.date, func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs) )\
-                            .filter( measurement.date > <start>);
+                            .filter( measurement.date >= start)\
+                            .group_by(measurement.date)
 
 
     #Close session link
@@ -162,14 +163,14 @@ def start():
         start_dict["min"] = min
         start_dict["max"] = max
         start_dict["avg"] = avg
-        start_dict.append(start_search)
+        start_search.append(start_dict)
     
-    return jsonify(hawaii_temps)
+    return jsonify(start_search)
 
 
 
 @app.route("/api/v1.0/<start>/<end>")
-def start_end():
+def start_end(start,end):
     """Code"""
 
 
