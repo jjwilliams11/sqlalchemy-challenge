@@ -27,6 +27,7 @@ station = Base.classes.station
 # Setup Flask
 
 app = Flask(__name__)
+# app.config['JSON_SORT_KEYS'] = False - stops the jsonify from resetting order to alphabetical
 
 # Setup Flask Routes
 # Home Route with Text
