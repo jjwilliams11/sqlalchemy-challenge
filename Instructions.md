@@ -68,7 +68,7 @@ To begin, use Python and SQLAlchemy to do basic climate analysis and data explor
 
   * Query the last 12 months of temperature observation data for this station.  ----- DONE ----
 
-  * Plot the results as a histogram with `bins=12`.
+  * Plot the results as a histogram with `bins=12`.  ----- DONE ----
 
     ![station-histogram](Images/station-histogram.png)
 
