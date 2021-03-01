@@ -133,13 +133,13 @@ Now that you have completed your initial analysis, design a Flask API based on t
 
 * Use pandas to perform this portion.
 
-  * Convert the date column format from string to datetime.
+  * Convert the date column format from string to datetime.  ----- DONE ----
 
-  * Set the date column as the DataFrame index
+  * Set the date column as the DataFrame index  ----- DONE ----
 
-  * Drop the date column
+  * Drop the date column  ----- DONE ----
 
-* Identify the average temperature in June at all stations across all available years in the dataset. Do the same for December temperature.
+* Identify the average temperature in June at all stations across all available years in the dataset. Do the same for December temperature.  ----- DONE ----
 
 * Use the t-test to determine whether the difference in the means, if any, is statistically significant. Will you use a paired t-test, or an unpaired t-test? Why?
 
