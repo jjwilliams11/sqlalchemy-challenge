@@ -156,20 +156,22 @@ def start(start = None):
     session = Session(engine)
 
     #Query all precipatations for Hawaii
+    #Committed out the group_by because wasn't sure if we were supposed to find min,max,avg for all dates from the stations
     start_query = session.query(measurement.date, func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs) )\
                             .filter(measurement.date >= start)\
-                            .group_by(measurement.date)
+                            #.group_by(measurement.date)
 
 
     #Close session link
     session.close()
 
     # Create a dictionary from the row data and append to a list precipitations
+    #Committed out the date since it wasn't needed unless the group_by is used
     start_search = []
 
     for date, min, max, avg in start_query:
         start_dict = {}
-        start_dict["date"] = date
+        #start_dict["date"] = date
         start_dict["min"] = min
         start_dict["max"] = max
         start_dict["avg"] = avg
@@ -188,20 +190,22 @@ def start_end(start = None ,end = None):
     session = Session(engine)
 
     #Query all precipatations for Hawaii
+    #Committed out the group_by because wasn't sure if we were supposed to find min,max,avg for all dates from the stations
     start_query = session.query(measurement.date, func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs) )\
                             .filter(measurement.date.between(start, end))\
-                            .group_by(measurement.date)
+                            #.group_by(measurement.date)
 
 
     #Close session link
     session.close()
 
     # Create a dictionary from the row data and append to a list precipitations
+    #Committed out the date since it wasn't needed unless the group_by is used
     start_search = []
 
     for date, min, max, avg in start_query:
         start_dict = {}
-        start_dict["date"] = date
+        #start_dict["date"] = date
         start_dict["min"] = min
         start_dict["max"] = max
         start_dict["avg"] = avg
